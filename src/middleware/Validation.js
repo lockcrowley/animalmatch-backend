@@ -13,8 +13,8 @@ exports.validRegister = async (req, res, next) => {
       errors.push("The email field is mandatory.");
   }
 
-  if (password.length < 6) {
-      errors.push("Password must contain at least 6 characters.");
+  if (password.length < 8) {
+      errors.push("Password must contain at least 8 characters.");
   }
 
   if (errors.length > 0) return res.status(400).json({ error: errors })
