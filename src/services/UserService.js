@@ -11,8 +11,28 @@ exports.getUsersService = async () => {
   return users;
 }
 
+exports.getUserByEmailService = async (data) => {
+  const user = await User.find({ email: data.email });
+
+  if(!user) {
+    throw new Error("User not found");
+  }
+
+  return user;
+}
+
 exports.editProfileService = async (data, userId) => {
-  const { name, email } = data;
+  const { 
+    name, 
+    email, 
+    street, 
+    city, 
+    state, 
+    zipCode, 
+    country,
+    description,
+    hashtags
+   } = data;
 
   const emailAlreadyExists = await User.find({email});
 
@@ -20,15 +40,21 @@ exports.editProfileService = async (data, userId) => {
     throw new Error("This e-mail is already in use");
   }
 
-  const updateUser = await User.findByIdAndUpdate(userId, {
-    name, email
+  return await User.findByIdAndUpdate(userId, {
+    name, 
+    email,
+    street, 
+    city, 
+    state, 
+    zipCode, 
+    country,
+    description,
+    hashtags
   });
-  
-  return updateUser;
 }
 
 exports.changePasswordService = async (data, userId) => {
-  const { currentPassword, newPassword } = data;
+  const { currentPassword, newPassword, confirmPassword } = data;
 
   const user = await User.findById(userId);
 
@@ -38,8 +64,14 @@ exports.changePasswordService = async (data, userId) => {
     throw new Error("Incorrect current password");
   }
 
+  const checkPasswordEquals = newPassword === confirmPassword;
+
+  if (!checkPasswordEquals) {
+    throw new Error("Password and confirmation password must be the sames");
+  }
+
   if(newPassword < 8) {
-    throw new Error("Password must contain at least 6 characters");
+    throw new Error("Password must contain at least 8 characters");
   }
 
   const newPasswordHash = await bcrypt.hash(newPassword, 10);

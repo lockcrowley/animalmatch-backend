@@ -32,11 +32,13 @@ exports.createUserService = async (data) => {
     name, 
     email, 
     password: passwordHash,
-    street, 
-    city, 
-    state, 
-    zipCode, 
-    country,
+    address: {
+      street, 
+      city, 
+      state, 
+      zipCode, 
+      country,
+    },
     description,
     hashtags
   });
@@ -76,30 +78,29 @@ exports.userLogoutService = async (res) => {
 };
 
 exports.forgotPasswordService = async (data) => {
-  const { email } = data;
+  try {
+    const { email } = data;
 
-  const userExists = await User.findOne({ email });
-
-  if (!userExists) {
-    throw new Error("E-mail not found")
+    const userExists = await User.findOne({ email });
+  
+    if (!userExists) {
+      throw new Error("E-mail not found")
+    }
+  
+    const token = jwt.sign({ id: userExists._id }, JWT_RESET, {
+      expiresIn: '20m'
+    });
+  
+    const { name } = userExists;
+  
+    const dataUser = await resetPasswordTemplate(email, name, token);
+  
+    await User.findOneAndUpdate({ email }, { resetToken: token });
+  
+    return await transporter.sendMail(dataUser)
+  } catch (err) {
+    throw new Error(err)
   }
-
-  const token = jwt.sign({ id: userExists._id }, JWT_RESET, {
-    expiresIn: '20m'
-  });
-
-  const { name } = userExists;
-
-  const dataUser = await resetPasswordTemplate(email, name, token);
-
-  await User.findOneAndUpdate({ email }, { resetToken: token });
-
-  transporter.sendMail(dataUser)
-    .then((successInfo) => {
-      return successInfo;
-    }).catch((error) => {
-      throw new Error(error);
-    })
 };
 
 exports.resetPasswordService = async (data, res) => {
@@ -124,7 +125,7 @@ exports.resetPasswordService = async (data, res) => {
       }
     }
   } catch (err) {
-    throw new Error("Token inválido");
+    throw new Error("Invalid Token");
   }
 };
 

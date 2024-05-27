@@ -16,6 +16,19 @@ exports.getUsers = async (req, res) => {
   }   
 };
 
+exports.getUserByEmail = async (req, res) => {
+  try {
+    const data = req.body;
+
+    const userByEmail = await getUsersService(data);
+
+    return res.status(200).json({ userByEmail });
+
+  } catch (error) {
+    return res.status(404).json({ error: error.message });
+  }   
+};
+
 exports.editProfile = async (req, res) => {
   try {
     const data = req.body;
