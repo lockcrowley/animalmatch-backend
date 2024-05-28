@@ -34,9 +34,9 @@ exports.getAnimalByName = async (req, res) => {
   try {
     const data = req.body;
 
-    const animalByEmail = await getAnimalByNameService(data);
+    const animalByName = await getAnimalByNameService(data);
 
-    return res.status(200).json({ animalByEmail });
+    return res.status(200).json({ animalByName });
 
   } catch (error) {
     return res.status(404).json({ error: error.message });
@@ -60,11 +60,11 @@ exports.editAnimals = async (req, res) => {
   try {
     const data = req.body;
     const userId = req.user._id;
-    const animalId = req.user.id;
+    const animalId = req.params.id;
 
-    const createAnimal = await editAnimalsService(data, userId, animalId);
+    await editAnimalsService(data, userId, animalId);
 
-    return res.status(200).json({ createAnimal });
+    return res.status(200).json({ message: "Animal atualizado com sucesso!" });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
@@ -73,7 +73,7 @@ exports.editAnimals = async (req, res) => {
 exports.deleteAnimal = async (req, res) => {
   try {
     const userId = req.user._id;
-    const animalId = req.user.id;
+    const animalId = req.params.id;
 
     await deleteAnimalsService(userId, animalId);
 

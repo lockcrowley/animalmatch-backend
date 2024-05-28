@@ -9,7 +9,7 @@ router.use('/api/auth', AuthRoutes);
 
 router.use('/api/users', UserRoutes);
 
-router.use('/api/animal', AnimalRoutes);
+router.use('/api/animals', AnimalRoutes);
 
 // router.use('/api/pets', PetRoutes);
 

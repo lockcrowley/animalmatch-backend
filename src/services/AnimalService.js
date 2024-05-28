@@ -22,7 +22,6 @@ exports.getAllAnimalsService = async () => {
   return animals;
 }
 
-
 exports.getAnimalByNameService = async (data) => {
   const animal = await Animal.find({ name: data.name });
 
@@ -52,15 +51,13 @@ exports.editAnimalsService = async (data, userId, animalId) => {
     throw new Error('Animal não encontrado ou não pertence a este usuário');
   }
 
-  const updatedAnimal = await animal.save({
+  return await Animal.findByIdAndUpdate(animalId, {
     name, 
     type, 
     race, 
     age, 
     image
   });
-  
-  return updatedAnimal;
 }
 
 exports.deleteAnimalsService = async (userId, animalId) => {
