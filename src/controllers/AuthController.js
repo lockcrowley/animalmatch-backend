@@ -39,7 +39,7 @@ exports.userLogout = async (req, res) => {
   try {
     await userLogoutService(res);
 
-    return res.status(200).json({ message: "Logout performed" });
+    return res.status(200).json({ message: "Deslogado com sucesso" });
 
   } catch (error) {
     return res.status(400).json({ error: error.message });
@@ -52,7 +52,7 @@ exports.forgotPassword = async (req, res) => {
 
     await forgotPasswordService(data);
 
-    return res.status(200).json("E-mail successfully sent");
+    return res.status(200).json("E-mail enviado com sucesso!");
 
   } catch (error) {
     return res.status(400).json({ error: error.message || error });
@@ -65,7 +65,7 @@ exports.resetPassword = async (req, res) => {
 
     await resetPasswordService(data);
 
-    return res.status(200).json("Password changed successfully");
+    return res.status(200).json("Senha alterada com sucesso!");
 
   } catch (error) {
     return res.status(400).json({ error: error.message });

@@ -7,15 +7,15 @@ const auth = async (req, res, next) => {
   try {
     const token = req.header('Authorization')
 
-    if(!token) return res.status(400).json({error: "You most be logged"});
+    if(!token) return res.status(400).json({error: "Você precisa estar logado!"});
 
     const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET);
 
-    if(!decoded) return res.status(400).json({error: "You most be logged"});
+    if(!decoded) return res.status(400).json({error: "Você precisa estar logado!"});
   
     const user = await User.findOne({_id: decoded.id});
 
-    if (!user) return res.status(400).json({error: "You most be logged"});
+    if (!user) return res.status(400).json({error: "Você precisa estar logado!"});
 
     req.user = user;
     next();

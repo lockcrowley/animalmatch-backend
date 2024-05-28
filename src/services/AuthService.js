@@ -23,7 +23,7 @@ exports.createUserService = async (data) => {
   const userExist = await User.findOne({ email });
 
   if (userExist) {
-    throw new Error("User already exists")
+    throw new Error("Usuário já existe")
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
@@ -50,13 +50,13 @@ exports.userLoginService = async (data, res) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    throw new Error("E-mail or password incorrect");
+    throw new Error("E-mail ou senha incorreta");
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    throw new Error("E-mail or password incorrect");
+    throw new Error("E-mail ou senha incorreta");
   }
 
   const accessToken = createAccessToken({ id: user._id });
@@ -80,11 +80,11 @@ exports.userLogoutService = async (res) => {
 exports.forgotPasswordService = async (data) => {
   try {
     const { email } = data;
-
+  
     const userExists = await User.findOne({ email });
   
     if (!userExists) {
-      throw new Error("E-mail not found")
+      throw new Error("E-mail não encontrado")
     }
   
     const token = jwt.sign({ id: userExists._id }, JWT_RESET, {
@@ -121,7 +121,7 @@ exports.resetPasswordService = async (data, res) => {
         );
         return updatePassword;
       } else {
-        throw new Error("User not found")
+        throw new Error("Usuário não encontrado")
       }
     }
   } catch (err) {
@@ -133,17 +133,17 @@ exports.generateAccessToken = async (req) => {
   const rf_token = req.cookies.refreshToken;
 
   if (!rf_token) {
-    throw new Error("You most be logged");
+    throw new Error("Você precisa estar logado!");
   }
 
   jwt.verify(rf_token, REFRESH_TOKEN_SECRET, async (err, result) => {
     if (err) {
-      throw new Error("You most be logged");
+      throw new Error("Você precisa estar logado!");
     }
     const user = await User.findById(result.id).select('-password');
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("Usuário não encontrado");
     }
 
     const access_token = createAccessToken({ id: result.id });
@@ -151,7 +151,7 @@ exports.generateAccessToken = async (req) => {
     const info = ({ access_token, user });
 
     return info;
-  })
+  });
 };
 
 const createAccessToken = (payload) => {

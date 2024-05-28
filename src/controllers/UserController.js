@@ -1,5 +1,6 @@
 const { 
   getUsersService,
+  getUserByEmailService,
   editProfileService,
   changePasswordService,
   deleteUserService
@@ -20,7 +21,7 @@ exports.getUserByEmail = async (req, res) => {
   try {
     const data = req.body;
 
-    const userByEmail = await getUsersService(data);
+    const userByEmail = await getUserByEmailService(data);
 
     return res.status(200).json({ userByEmail });
 
@@ -36,7 +37,7 @@ exports.editProfile = async (req, res) => {
 
     await editProfileService(data, userId);
 
-    return res.status(200).json({message: "User updated"});
+    return res.status(200).json({message: "Usuário atualizado!"});
        
   } catch (error) {
     return res.status(400).json({ error: error.message });
@@ -50,7 +51,7 @@ exports.changePassword = async (req, res) => {
 
     await changePasswordService(data, userId);
 
-    return res.status(200).json({message: "Password updated"});
+    return res.status(200).json({message: "Senha atualizada!"});
     
   } catch (error) {
     return res.status(400).json({ error: error.message });
@@ -63,7 +64,7 @@ exports.deleteUser = async (req, res) => {
 
     await deleteUserService(userId);
 
-    return res.status(200).json({message: "User successfully deleted"});
+    return res.status(200).json({message: "Usuário deletado!"});
 
   } catch (error) {
     return res.status(400).json({ error: error.message });

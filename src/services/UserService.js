@@ -5,7 +5,7 @@ exports.getUsersService = async () => {
   const users = await User.find();
 
   if(!users) {
-    throw new Error("Users not found");
+    throw new Error("Usuários não encontrado");
   }
 
   return users;
@@ -15,7 +15,7 @@ exports.getUserByEmailService = async (data) => {
   const user = await User.find({ email: data.email });
 
   if(!user) {
-    throw new Error("User not found");
+    throw new Error("Usuário não encontrado");
   }
 
   return user;
@@ -31,13 +31,14 @@ exports.editProfileService = async (data, userId) => {
     zipCode, 
     country,
     description,
-    hashtags
+    hashtags,
+    image
    } = data;
 
-  const emailAlreadyExists = await User.find({email});
+  const emailAlreadyExists = await User.find({ email });
 
   if(!emailAlreadyExists) {
-    throw new Error("This e-mail is already in use");
+    throw new Error("Este e-mail já está em uso");
   }
 
   return await User.findByIdAndUpdate(userId, {
@@ -49,7 +50,8 @@ exports.editProfileService = async (data, userId) => {
     zipCode, 
     country,
     description,
-    hashtags
+    hashtags,
+    image
   });
 }
 
@@ -61,17 +63,17 @@ exports.changePasswordService = async (data, userId) => {
   const checkPassword = await bcrypt.compare(currentPassword, user.password);
 
   if(!checkPassword) {
-    throw new Error("Incorrect current password");
+    throw new Error("Senha atual incorreta");
   }
 
   const checkPasswordEquals = newPassword === confirmPassword;
 
   if (!checkPasswordEquals) {
-    throw new Error("Password and confirmation password must be the sames");
+    throw new Error("A senha e confirmação precisam ser iguais");
   }
 
   if(newPassword < 8) {
-    throw new Error("Password must contain at least 8 characters");
+    throw new Error("A senha deve ter pelo menos 8 caracteres.");
   }
 
   const newPasswordHash = await bcrypt.hash(newPassword, 10);
@@ -84,7 +86,5 @@ exports.changePasswordService = async (data, userId) => {
 }
 
 exports.deleteUserService = async (userId) => {
-  const deleteUser = await User.findByIdAndDelete(userId);
-
-  return deleteUser;
+  return await User.findByIdAndDelete(userId);
 };

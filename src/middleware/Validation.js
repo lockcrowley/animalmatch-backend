@@ -4,36 +4,54 @@ exports.validRegister = async (req, res, next) => {
   const errors = [];
 
   if (!name) {
-      errors.push("The name field is mandatory.");
-  } else if (name.length > 30) {
-      errors.push("Your name is too long.");
+      errors.push("O nome é obrigatório.");
+  } else if (name.length > 50) {
+      errors.push("O campo nome é muito longo.");
   }
 
   if (!email) {
-      errors.push("The email field is mandatory.");
+      errors.push("O e-mail é obrigatório.");
   }
 
   if (password.length < 8) {
-      errors.push("Password must contain at least 8 characters.");
+      errors.push("A senha deve ter pelo menos 8 caracteres.");
+  }
+
+  if (!password) {
+    errors.push("A senha é obrigatória.");
   }
 
   if (errors.length > 0) return res.status(400).json({ error: errors })
   next();
 };
 
-exports.validPost = async (req, res, next) => {
-  const { title, description } = req.body
+exports.validAnimal = async (req, res, next) => {
+  const { name, type, race, age } = req.body
 
   const errors = [];
 
-  if (!title) {
-      errors.push("Título é obrigatório.");
-  } else if (title.length > 100) {
-      errors.push("Seu título é muito longo.");
+  if (!name) {
+      errors.push("O nome é obrigatório.");
+  } else if (name.length > 30) {
+      errors.push("O campo nome é muito longo.");
   }
 
-  if (!description) {
-      errors.push("Descrição é obrigatório.");
+  if (!type) {
+      errors.push("O tipo é obrigatório.");
+  } else if (type.length > 30) {
+    errors.push("O campo tipo é muito longo.");
+  }
+
+  if (!race) {
+    errors.push("O tipo é obrigatório.");
+  } else if (race.length > 30) {
+    errors.push("O campo tipo é muito longo.");
+  }
+
+  if (!age) {
+    errors.push("A idade é obrigatória.");
+  } else if (age.length > 30) {
+    errors.push("O campo idade é muito longo.");
   }
 
   if (errors.length > 0) return res.status(400).json({ error: errors })
