@@ -13,6 +13,10 @@ exports.validRegister = async (req, res, next) => {
       errors.push("O e-mail é obrigatório.");
   }
 
+  if (!isValidEmail(email)) {
+    errors.push("O e-mail é inválido");
+  }
+
   if (password.length < 8) {
       errors.push("A senha deve ter pelo menos 8 caracteres.");
   }
@@ -57,3 +61,8 @@ exports.validAnimal = async (req, res, next) => {
   if (errors.length > 0) return res.status(400).json({ error: errors })
   next();
 };
+
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}

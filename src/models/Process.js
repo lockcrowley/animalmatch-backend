@@ -1,19 +1,22 @@
 const mongoose = require('mongoose');
+const { format } = require('date-fns')
+
+const newDate = format(new Date(), 'yyyy-MM-dd:HH:mm:ss')
 
 const ProcessSchema = new mongoose.Schema({
   status: {
     type: String,
-    enum: ['pending', 'approved', 'canceled'],
+    enum: ['pending', 'concluded', 'canceled'],
     default: 'pending'
   },
   days: {
     type: Number,
-    required: true
+    default: 14
   },
 
   createdAt: {
     type: Date,
-    default: Date.now
+    default: newDate
   },
 
   adopter: {

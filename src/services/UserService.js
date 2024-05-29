@@ -4,8 +4,8 @@ const bcrypt = require('bcryptjs');
 exports.getUsersService = async () => {
   const users = await User.find();
 
-  if(!users) {
-    throw new Error("Usuários não encontrado");
+  if(!users || !users.length) {
+    throw new Error("Usuários não encontrados");
   }
 
   return users;
@@ -14,7 +14,7 @@ exports.getUsersService = async () => {
 exports.getUserByEmailService = async (data) => {
   const user = await User.find({ email: data.email });
 
-  if(!user) {
+  if(!user || !user.length) {
     throw new Error("Usuário não encontrado");
   }
 
@@ -35,7 +35,7 @@ exports.editProfileService = async (data, userId) => {
     image
    } = data;
 
-  const emailAlreadyExists = await User.find({ email });
+  const emailAlreadyExists = await User.findOne({ email });
 
   if(!emailAlreadyExists) {
     throw new Error("Este e-mail já está em uso");

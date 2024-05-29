@@ -28,7 +28,8 @@ const AnimalSchema = new mongoose.Schema({
 
   owner: { 
     type: mongoose.Types.ObjectId, 
-    ref: 'user', required: true 
+    ref: 'user', 
+    required: true 
   }
 });
 

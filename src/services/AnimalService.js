@@ -15,7 +15,7 @@ exports.createAnimalsService = async (data, userId) => {
 exports.getAllAnimalsService = async () => {
   const animals = await Animal.find();
 
-  if(!animals) {
+  if(!animals || !animals.length) {
     throw new Error("Animal não encontrado");
   }
 
@@ -23,7 +23,7 @@ exports.getAllAnimalsService = async () => {
 }
 
 exports.getAnimalByNameService = async (data) => {
-  const animal = await Animal.find({ name: data.name });
+  const animal = await Animal.findOne({ name: data.name });
 
   if(!animal) {
     throw new Error("Animal não encontrado");
@@ -35,7 +35,7 @@ exports.getAnimalByNameService = async (data) => {
 exports.getAnimalByUserService = async (userId) => {
   const animal = await Animal.find({ owner: userId });
 
-  if (!animal) {
+  if (!animal || !animal.length) {
     throw new Error('Animal não encontrado ou não pertence a este usuário');
   }
   
