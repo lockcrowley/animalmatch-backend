@@ -1,5 +1,14 @@
 exports.validRegister = async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { 
+    name, 
+    email, 
+    password, 
+    street, 
+    city, 
+    state, 
+    zipCode, 
+    country
+  } = req.body;
 
   const errors = [];
 
@@ -9,23 +18,26 @@ exports.validRegister = async (req, res, next) => {
       errors.push("O campo nome é muito longo.");
   }
 
-  if (!email) {
-      errors.push("O e-mail é obrigatório.");
-  }
+  if (!email) errors.push("O e-mail é obrigatório.");
+  
+  if (!street) errors.push("A rua é obrigatória.");
 
-  if (!isValidEmail(email)) {
-    errors.push("O e-mail é inválido");
-  }
+  if (!city) errors.push("A cidade é obrigatória.");
 
-  if (password.length < 8) {
-      errors.push("A senha deve ter pelo menos 8 caracteres.");
-  }
+  if (!state) errors.push("O estado é obrigatório.");
 
-  if (!password) {
-    errors.push("A senha é obrigatória.");
-  }
+  if (!country) errors.push("O país é obrigatório.");
+
+  if (!zipCode) errors.push("O CEP é obrigatório.");
+
+  if (!isValidEmail(email)) errors.push("O e-mail é inválido");
+
+  if (password.length < 8) errors.push("A senha deve ter pelo menos 8 caracteres.");
+
+  if (!password) errors.push("A senha é obrigatória.");
 
   if (errors.length > 0) return res.status(400).json({ error: errors })
+
   next();
 };
 

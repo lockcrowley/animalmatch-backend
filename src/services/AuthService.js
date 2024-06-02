@@ -11,6 +11,7 @@ exports.createUserService = async (data) => {
     name, 
     email, 
     password, 
+    phone,
     street, 
     city, 
     state, 
@@ -23,7 +24,7 @@ exports.createUserService = async (data) => {
   const userExist = await User.findOne({ email });
 
   if (userExist) {
-    throw new Error("Usuário já existe")
+    throw new Error("Este usuário já existe!")
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
@@ -32,6 +33,7 @@ exports.createUserService = async (data) => {
     name, 
     email, 
     password: passwordHash,
+    phone,
     address: {
       street, 
       city, 
