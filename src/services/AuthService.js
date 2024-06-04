@@ -12,6 +12,7 @@ exports.createUserService = async (data) => {
     email, 
     password, 
     phone,
+    wantToAdopt,
     street, 
     city, 
     state, 
@@ -34,6 +35,7 @@ exports.createUserService = async (data) => {
     email, 
     password: passwordHash,
     phone,
+    wantToAdopt,
     address: {
       street, 
       city, 
@@ -156,10 +158,10 @@ exports.generateAccessToken = async (req) => {
   });
 };
 
-const createAccessToken = (payload) => {
-  return jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
-};
+  const createAccessToken = (payload) => {
+    return jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
+  };
 
-const createRefreshToken = (payload) => {
-  return jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
-};
+  const createRefreshToken = (payload) => {
+    return jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
+  };

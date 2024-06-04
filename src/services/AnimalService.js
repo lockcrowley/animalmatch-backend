@@ -1,12 +1,13 @@
 const Animal = require('../models/Animals');
 
 exports.createAnimalsService = async (data, userId) => {
-  const { name, type, race, age } = data;
+  const { name, type, race, sex, age } = data;
 
   return await Animal.create({
     name,
     type,
     race,
+    sex,
     age,
     owner: userId
   });
@@ -43,7 +44,7 @@ exports.getAnimalByUserService = async (userId) => {
 }
 
 exports.editAnimalsService = async (data, userId, animalId) => {
-  const { name, type, race, age, image } = data;
+  const { name, type, race, sex, age, image } = data;
 
   const animal = await Animal.findOne({ _id: animalId, owner: userId });
     
@@ -54,7 +55,8 @@ exports.editAnimalsService = async (data, userId, animalId) => {
   return await Animal.findByIdAndUpdate(animalId, {
     name, 
     type, 
-    race, 
+    race,
+    sex,
     age, 
     image
   });

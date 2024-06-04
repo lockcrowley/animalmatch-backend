@@ -24,7 +24,8 @@ exports.getUserByEmailService = async (data) => {
 exports.editProfileService = async (data, userId) => {
   const { 
     name, 
-    email, 
+    email,
+    wantToAdopt,
     street, 
     city, 
     state, 
@@ -44,6 +45,7 @@ exports.editProfileService = async (data, userId) => {
   return await User.findByIdAndUpdate(userId, {
     name, 
     email,
+    wantToAdopt,
     street, 
     city, 
     state, 

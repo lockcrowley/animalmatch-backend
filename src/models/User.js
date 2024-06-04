@@ -48,6 +48,11 @@ const UserSchema = mongoose.Schema({
     required: true
   },
 
+  wantToAdopt: {
+    type: String,
+    required: true
+  },
+
   description: {
     type: String,
     required: false
