@@ -1,5 +1,6 @@
 const Process = require('../models/Process');
 const Animal = require('../models/Animals');
+const User = require('../models/User');
 
 exports.createProcessService = async (userId, animalId) => {
   const processAlreadyExists = await Process.findOne({ animal: animalId });
@@ -60,6 +61,7 @@ exports.getAnimalsInAdoptionProcessService = async (userId) => {
 
 exports.updateProcessService = async (processId, userId, isCancel = false) => {
   const processToUpdate = await Process.findOne({ _id: processId, adopter: userId });
+  const user = await User.findOne({ _id: userId });
 
   if(!processToUpdate) {
     throw new Error("Processo não encontrado!");
@@ -70,6 +72,12 @@ exports.updateProcessService = async (processId, userId, isCancel = false) => {
       status: 'canceled',
     });
   }
+
+  const sum = user.adopter + 1;
+
+  await User.findByIdAndUpdate(userId, {
+    adopter: sum
+  });
 
   return await Process.findByIdAndUpdate(processId, {
     status: 'concluded',

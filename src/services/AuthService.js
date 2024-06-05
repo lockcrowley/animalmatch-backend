@@ -12,6 +12,7 @@ exports.createUserService = async (data) => {
     email, 
     password, 
     phone,
+    residence,
     wantToAdopt,
     street, 
     city, 
@@ -35,6 +36,7 @@ exports.createUserService = async (data) => {
     email, 
     password: passwordHash,
     phone,
+    residence,
     wantToAdopt,
     address: {
       street, 
