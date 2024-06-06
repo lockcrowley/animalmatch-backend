@@ -35,9 +35,9 @@ exports.editProfile = async (req, res) => {
     const data = req.body;
     const userId = req.user._id;
 
-    await editProfileService(data, userId);
+    const updatedUser = await editProfileService(data, userId);
 
-    return res.status(200).json({message: "Usuário atualizado!"});
+    return res.status(200).json({ user: updatedUser });
        
   } catch (error) {
     return res.status(400).json({ error: error.message });

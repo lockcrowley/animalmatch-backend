@@ -25,6 +25,8 @@ exports.editProfileService = async (data, userId) => {
   const { 
     name, 
     email,
+    password,
+    currentPassword, 
     residence,
     wantToAdopt,
     street, 
@@ -43,16 +45,27 @@ exports.editProfileService = async (data, userId) => {
     throw new Error("Este e-mail já está em uso");
   }
 
+  const user = await User.findById(userId);
+
+  const checkPassword = await bcrypt.compare(currentPassword, user.password);
+
+  if(!checkPassword) {
+    throw new Error("Senha atual incorreta");
+  }
+
   return await User.findByIdAndUpdate(userId, {
     name, 
+    password,
     email,
     residence,
     wantToAdopt,
-    street, 
-    city, 
-    state, 
-    zipCode, 
-    country,
+    address: {
+      street, 
+      city, 
+      state, 
+      zipCode, 
+      country,
+    },
     description,
     hashtags,
     image
