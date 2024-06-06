@@ -53,9 +53,11 @@ exports.editProfileService = async (data, userId) => {
     throw new Error("Senha atual incorreta");
   }
 
+  const passwordHash = await bcrypt.hash(password, 10);
+
   return await User.findByIdAndUpdate(userId, {
     name, 
-    password,
+    password: passwordHash,
     email,
     residence,
     wantToAdopt,
