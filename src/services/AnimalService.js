@@ -23,6 +23,16 @@ exports.getAllAnimalsService = async () => {
   return animals;
 }
 
+exports.getAnimalsToAdopteService = async (userId) => {
+  const animals = await Animal.find({ owner: { $ne: userId } });
+
+  if(!animals || !animals.length) {
+    throw new Error("Animais não encontrados");
+  }
+
+  return animals;
+}
+
 exports.getAnimalByNameService = async (data) => {
   const animal = await Animal.findOne({ name: data.name });
 
