@@ -26,6 +26,11 @@ const AnimalSchema = new mongoose.Schema({
     required: true
   },
 
+  description: {
+    type: String,
+    required: false
+  },
+
   image: {
     type: String,
     default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXY-Z5_TQmxJBj9rWmtaNOLz7hXKE079ITZg&s"

@@ -1,7 +1,7 @@
 const Animal = require('../models/Animals');
 
 exports.createAnimalsService = async (data, userId) => {
-  const { name, type, race, sex, age } = data;
+  const { name, type, race, sex, age, description } = data;
 
   return await Animal.create({
     name,
@@ -9,6 +9,7 @@ exports.createAnimalsService = async (data, userId) => {
     race,
     sex,
     age,
+    description,
     owner: userId
   });
 };
