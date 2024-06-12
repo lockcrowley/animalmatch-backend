@@ -106,3 +106,19 @@ exports.updateProcessDaysService = async (processId) => {
     });
   }
 };
+
+exports.cancelExpiredAdoptionProcessesService = async () => {
+  try {
+    await Process.updateMany(
+        { status: 'pending', days: { $gt: 0 } },
+        { $inc: { days: -1 } }
+    );
+
+    return await Process.updateMany(
+        { status: 'pending', days: { $lte: 0 } },
+        { $set: { status: 'canceled' } }
+    );
+  } catch (error) {
+      return error
+  }
+}
