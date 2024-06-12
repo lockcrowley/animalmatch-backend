@@ -11,6 +11,9 @@ exports.createUserService = async (data) => {
     name, 
     email, 
     password, 
+    phone,
+    residence,
+    wantToAdopt,
     street, 
     city, 
     state, 
@@ -23,7 +26,7 @@ exports.createUserService = async (data) => {
   const userExist = await User.findOne({ email });
 
   if (userExist) {
-    throw new Error("Usuário já existe")
+    throw new Error("Este usuário já existe!")
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
@@ -32,6 +35,9 @@ exports.createUserService = async (data) => {
     name, 
     email, 
     password: passwordHash,
+    phone,
+    residence,
+    wantToAdopt,
     address: {
       street, 
       city, 
@@ -154,10 +160,10 @@ exports.generateAccessToken = async (req) => {
   });
 };
 
-const createAccessToken = (payload) => {
-  return jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
-};
+  const createAccessToken = (payload) => {
+    return jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
+  };
 
-const createRefreshToken = (payload) => {
-  return jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
-};
+  const createRefreshToken = (payload) => {
+    return jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
+  };

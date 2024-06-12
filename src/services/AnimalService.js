@@ -1,13 +1,15 @@
 const Animal = require('../models/Animals');
 
 exports.createAnimalsService = async (data, userId) => {
-  const { name, type, race, age } = data;
+  const { name, type, race, sex, age, description } = data;
 
   return await Animal.create({
     name,
     type,
     race,
+    sex,
     age,
+    description,
     owner: userId
   });
 };
@@ -17,6 +19,16 @@ exports.getAllAnimalsService = async () => {
 
   if(!animals || !animals.length) {
     throw new Error("Animal não encontrado");
+  }
+
+  return animals;
+}
+
+exports.getAnimalsToAdopteService = async (userId) => {
+  const animals = await Animal.find({ owner: { $ne: userId } });
+
+  if(!animals || !animals.length) {
+    throw new Error("Animais não encontrados");
   }
 
   return animals;
@@ -43,7 +55,7 @@ exports.getAnimalByUserService = async (userId) => {
 }
 
 exports.editAnimalsService = async (data, userId, animalId) => {
-  const { name, type, race, age, image } = data;
+  const { name, type, race, sex, age, image } = data;
 
   const animal = await Animal.findOne({ _id: animalId, owner: userId });
     
@@ -54,7 +66,8 @@ exports.editAnimalsService = async (data, userId, animalId) => {
   return await Animal.findByIdAndUpdate(animalId, {
     name, 
     type, 
-    race, 
+    race,
+    sex,
     age, 
     image
   });

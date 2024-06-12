@@ -10,6 +10,8 @@ router.get('/list-animals', AnimalCtrl.getAllAnimals);
 
 router.get('/list-animal/name', AnimalCtrl.getAnimalByName);
 
+router.get('/animals-to-adopte', Auth, AnimalCtrl.getAnimalsToAdopte);
+
 router.get('/list-user-animals', Auth, AnimalCtrl.getAnimalByUser);
 
 router.put('/edit-animal/:id', Auth, AnimalCtrl.editAnimals);

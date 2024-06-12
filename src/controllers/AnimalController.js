@@ -4,7 +4,8 @@ const {
   getAnimalByNameService,
   getAnimalByUserService,
   editAnimalsService,
-  deleteAnimalsService
+  deleteAnimalsService,
+  getAnimalsToAdopteService
 } = require('../services/AnimalService');
 
 exports.createAnimals = async (req, res) => {
@@ -30,6 +31,18 @@ exports.getAllAnimals = async (req, res) => {
   }
 }
 
+exports.getAnimalsToAdopte = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const animals = await getAnimalsToAdopteService(userId);
+
+    return res.status(200).json({ animals });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+}
+
 exports.getAnimalByName = async (req, res) => {
   try {
     const data = req.body;
@@ -47,9 +60,9 @@ exports.getAnimalByUser = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    const animalsByUser = await getAnimalByUserService(userId);
+    const animals = await getAnimalByUserService(userId);
 
-    return res.status(200).json({ animalsByUser });
+    return res.status(200).json({ animals });
 
   } catch (error) {
     return res.status(404).json({ error: error.message });

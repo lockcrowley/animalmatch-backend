@@ -25,6 +25,8 @@ exports.editProfileService = async (data, userId) => {
   const { 
     name, 
     email, 
+    residence,
+    wantToAdopt,
     street, 
     city, 
     state, 
@@ -44,11 +46,15 @@ exports.editProfileService = async (data, userId) => {
   return await User.findByIdAndUpdate(userId, {
     name, 
     email,
-    street, 
-    city, 
-    state, 
-    zipCode, 
-    country,
+    residence,
+    wantToAdopt,
+    address: {
+      street, 
+      city, 
+      state, 
+      zipCode, 
+      country,
+    },
     description,
     hashtags,
     image
