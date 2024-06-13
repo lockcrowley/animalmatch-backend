@@ -35,9 +35,9 @@ exports.getProcessesByAdopter = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    const getProcess = await getProcessesByAdopterService(userId);
+    const processes = await getProcessesByAdopterService(userId);
 
-    return res.status(200).json({ getProcess });
+    return res.status(200).json({ processes });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
@@ -59,9 +59,9 @@ exports.getAnimalsInAdoptionProcess = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    const getAnimalsInAdoption = await getAnimalsInAdoptionProcessService(userId);
+    const processes = await getAnimalsInAdoptionProcessService(userId);
 
-    return res.status(200).json({ getAnimalsInAdoption });
+    return res.status(200).json({ processes });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }

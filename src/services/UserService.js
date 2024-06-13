@@ -12,9 +12,19 @@ exports.getUsersService = async () => {
 }
 
 exports.getUserByEmailService = async (data) => {
-  const user = await User.find({ email: data.email });
+  const user = await User.findOne({ email: data.email });
 
-  if(!user || !user.length) {
+  if(!user) {
+    throw new Error("Usuário não encontrado");
+  }
+
+  return user;
+}
+
+exports.getUserByIdService = async (userId) => {
+  const user = await User.findOne({ _id: userId });
+
+  if(!user) {
     throw new Error("Usuário não encontrado");
   }
 

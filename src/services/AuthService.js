@@ -20,7 +20,8 @@ exports.createUserService = async (data) => {
     zipCode, 
     country,
     description,
-    hashtags
+    hashtags,
+    isOng
   } = data;
   
   const userExist = await User.findOne({ email });
@@ -46,7 +47,8 @@ exports.createUserService = async (data) => {
       country,
     },
     description,
-    hashtags
+    hashtags,
+    isOng
   });
 };
 

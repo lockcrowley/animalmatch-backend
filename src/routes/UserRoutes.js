@@ -7,6 +7,8 @@ router.get('/list', UserCtrl.getUsers);
 
 router.get('/list-by-email', UserCtrl.getUserByEmail);
 
+router.get('/find-user/:id', UserCtrl.getUserById);
+
 router.put('/edit', Auth, UserCtrl.editProfile);
 
 router.put('/change-password', Auth, UserCtrl.changePassword);

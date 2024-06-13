@@ -5,13 +5,16 @@ const User = require('../models/User');
 exports.createProcessService = async (userId, animalId) => {
   const processAlreadyExists = await Process.findOne({ animal: animalId });
 
-  if(processAlreadyExists) {
+  if(processAlreadyExists && processAlreadyExists.status !== 'Cancelado') {
     throw new Error("Este animal já está em um processo de adoção!");
   }
 
+  const animal = await Animal.findOne({ _id: animalId });
+
   return await Process.create({
     adopter: userId,
-    animal: animalId
+    animal: animalId,
+    animalName: animal.name
   });
 };
 
@@ -69,7 +72,7 @@ exports.updateProcessService = async (processId, userId, isCancel = false) => {
 
   if (isCancel) {
     return await Process.findByIdAndUpdate(processId, {
-      status: 'canceled',
+      status: 'Cancelado',
     });
   }
 
@@ -80,7 +83,7 @@ exports.updateProcessService = async (processId, userId, isCancel = false) => {
   });
 
   return await Process.findByIdAndUpdate(processId, {
-    status: 'concluded',
+    status: 'Concluido',
     days: 0
   });
 };
@@ -92,7 +95,7 @@ exports.updateProcessDaysService = async (processId) => {
     throw new Error("Processo não encontrado!");
   }
 
-  if (processToUpdate.status === 'concluded') {
+  if (processToUpdate.status === 'Concluido') {
     throw new Error("Os dias do processo não precisam ser atualizados, pois este processo já está concluido!");
   }
 
@@ -110,13 +113,13 @@ exports.updateProcessDaysService = async (processId) => {
 exports.cancelExpiredAdoptionProcessesService = async () => {
   try {
     await Process.updateMany(
-        { status: 'pending', days: { $gt: 0 } },
+        { status: 'Pendente', days: { $gt: 0 } },
         { $inc: { days: -1 } }
     );
 
     return await Process.updateMany(
-        { status: 'pending', days: { $lte: 0 } },
-        { $set: { status: 'canceled' } }
+        { status: 'Pendente', days: { $lte: 0 } },
+        { $set: { status: 'Cancelado' } }
     );
   } catch (error) {
       return error

@@ -1,6 +1,7 @@
 const { 
   getUsersService,
   getUserByEmailService,
+  getUserByIdService,
   editProfileService,
   changePasswordService,
   deleteUserService
@@ -24,6 +25,19 @@ exports.getUserByEmail = async (req, res) => {
     const userByEmail = await getUserByEmailService(data);
 
     return res.status(200).json({ userByEmail });
+
+  } catch (error) {
+    return res.status(404).json({ error: error.message });
+  }   
+};
+
+exports.getUserById = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await getUserByIdService(userId);
+
+    return res.status(200).json({ user });
 
   } catch (error) {
     return res.status(404).json({ error: error.message });
