@@ -6,8 +6,8 @@ const newDate = format(new Date(), 'yyyy-MM-dd:HH:mm:ss')
 const ProcessSchema = new mongoose.Schema({
   status: {
     type: String,
-    enum: ['pending', 'concluded', 'canceled'],
-    default: 'pending'
+    enum: ['Pendente', 'Concluido', 'Cancelado'],
+    default: 'Pendente'
   },
   days: {
     type: Number,
@@ -28,6 +28,11 @@ const ProcessSchema = new mongoose.Schema({
   animal: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Animal',
+    required: true
+  },
+
+  animalName: {
+    type: String,
     required: true
   },
 });
